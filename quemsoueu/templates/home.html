@@ -5,6 +5,12 @@
     <title>Quem sou eu?</title>
 </head>
 <body>
-SIM CAMILA, EU TO FAZENDO DE VERDADE
+Quem é você?
+
+<form method=post>
+    {{ form.csrf_token }}
+    {{ form.username }}
+    <input type=submit>
+</form>
 </body>
 </html>
