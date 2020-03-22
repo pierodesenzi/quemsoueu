@@ -26,7 +26,8 @@ def wait():
 def set_characters():
     ready = list(db.engine.execute('SELECT COUNT(*) FROM User WHERE target IS NOT NULL'))
     #shuffler
-    if len(ready):
+    if len(ready) == 0:
+        print('B')
         players = []
         users = User.query.all()
         for u in users:
@@ -34,8 +35,8 @@ def set_characters():
         random.shuffle(players)
         for p in range(0,len(players)):
             result = db.engine.execute("UPDATE user SET target='{}' WHERE username='{}'".format(players[p-1], players[p]))
-        mytarget = list(db.engine.execute("SELECT target FROM user WHERE username='{}'".format(request.cookies.get('myname'))))[0][0]
-        db.session.commit()
+    mytarget = list(db.engine.execute("SELECT target FROM user WHERE username='{}'".format(request.cookies.get('myname'))))[0][0]
+    db.session.commit()
     form = CharacterForm()
     if form.validate_on_submit():
         result = db.engine.execute("UPDATE user SET character='{}' WHERE username='{}'".format(form.character.data, request.cookies.get('myname')))
