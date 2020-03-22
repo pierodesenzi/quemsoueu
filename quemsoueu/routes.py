@@ -31,7 +31,7 @@ def set_characters():
 
     if not ready:
         print('shuffling...')
-        db.engine.execute("UPDATE flag SET status = True")
+        db.engine.execute("UPDATE flag SET status = 1")
         db.session.commit()
         players = []
         users = list(db.engine.execute('SELECT * FROM user'))
@@ -69,6 +69,6 @@ def game():
 @app.route("/reset")
 def reset():
     tuples = db.engine.execute("DELETE FROM user")
-    db.engine.execute("UPDATE flag SET status = false")
+    db.engine.execute("UPDATE flag SET status = 0")
     db.session.commit()
     return render_template('reset.html')
