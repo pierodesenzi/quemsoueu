@@ -24,12 +24,16 @@ def wait():
 
 @app.route("/set_characters", methods=['GET', 'POST'])
 def set_characters():
-    ready = list(db.engine.execute('SELECT COUNT(*) FROM User WHERE target IS NOT NULL'))
-    #shuffler
+    ready = list(db.engine.execute('SELECT target FROM User WHERE username = "__flag"'))
+    print(ready)
+
     if len(ready) == 0:
+        flag = User(username='__flag')
+        db.session.add(flag)
+        db.session.commit()
         print('B')
         players = []
-        users = User.query.all()
+        users = list(db.engine.execute('SELECT * FROM user WHERE username != "__flag"'))
         for u in users:
             players.append(u.username)
         random.shuffle(players)
@@ -47,7 +51,7 @@ def set_characters():
 
 @app.route("/game")
 def game():
-    tuples = db.engine.execute("SELECT target, CASE WHEN target != '{}' THEN character ELSE '???' END as character FROM user".format(request.cookies.get('myname')))
+    tuples = db.engine.execute("SELECT target, CASE WHEN target != '{}' THEN character ELSE '???' END as character FROM user WHERE username != '__flag'".format(request.cookies.get('myname')))
     lst = list(tuples)
     return render_template('game.html', name=request.cookies.get('myname'), players = lst)
 
@@ -55,5 +59,6 @@ def game():
 @app.route("/reset")
 def reset():
     tuples = db.engine.execute("DELETE FROM user")
+    #db.engine.execute("UPDATE startflag SET ready = False")
     db.session.commit()
     return render_template('reset.html')
