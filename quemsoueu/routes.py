@@ -19,7 +19,8 @@ def home():
 
 @app.route("/wait")
 def wait():
-    return render_template('wait.html', name=request.cookies.get('myname'))
+    users = list(db.engine.execute('SELECT username FROM user WHERE username != "__flag"'))
+    return render_template('wait.html', name=request.cookies.get('myname'), users = users)
 
 
 @app.route("/set_characters", methods=['GET', 'POST'])
