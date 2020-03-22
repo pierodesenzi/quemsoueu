@@ -7,5 +7,11 @@
 <body>
 Defina o personagem de {{ target }}, {{ name }}
 
+<form method=post>
+    {{ form.csrf_token }}
+    {{ form.character }}
+    <input type=submit>
+</form>
+
 </body>
 </html>

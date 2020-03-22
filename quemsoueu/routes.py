@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, make_response
 from quemsoueu import app, db
-from quemsoueu.forms import RegistrationForm
+from quemsoueu.forms import RegistrationForm, CharacterForm
 from quemsoueu.models import User, StartFlag
 import random
 
@@ -23,9 +23,10 @@ def wait():
     return render_template('wait.html', name=request.cookies.get('myname'))
 
 
-@app.route("/set_characters")
+@app.route("/set_characters", methods=['GET', 'POST'])
 def set_characters():
     ready = True#StartFlag.query.first()[1]
+    #shuffler
     if ready:
         players = []
         users = User.query.all()
@@ -35,11 +36,18 @@ def set_characters():
         random.shuffle(players)
         for p in range(0,len(players)):
             result = db.engine.execute("UPDATE user SET target='{}' WHERE username='{}'".format(players[p-1], players[p]))
-        mytarget = list(db.engine.execute("SELECT target FROM user WHERE username='{}'".format(request.cookies.get('myname'))))[0][0]#[2]
+        mytarget = list(db.engine.execute("SELECT target FROM user WHERE username='{}'".format(request.cookies.get('myname'))))[0][0]
+        db.session.commit()
+    form = CharacterForm()
+    if form.validate_on_submit():
+        result = db.engine.execute("UPDATE user SET character='{}' WHERE username='{}'".format(form.character.data, request.cookies.get('myname')))
+        db.session.commit()
+        return redirect(url_for('game'))
     return render_template('set_characters.html', name=request.cookies.get('myname'),
-        target = mytarget)
+        target = mytarget, form=form)
 
 @app.route("/game")
 def game():
-    User.query.all
-    return render_template('wait.html', name=request.cookies.get('myname'))
+    tuples = db.engine.execute("SELECT target, character FROM user WHERE target !='{}'".format(request.cookies.get('myname')))
+    lst = list(tuples)
+    return render_template('game.html', name=request.cookies.get('myname'), players = lst)
