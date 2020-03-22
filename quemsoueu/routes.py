@@ -11,7 +11,6 @@ def home():
         user = User(username=form.username.data)
         db.session.add(user)
         db.session.commit()
-        #flash('Your account has been created! You are now able to log in', 'success')
         res = make_response(redirect(url_for('wait')))
         res.set_cookie('myname', form.username.data, max_age=60*60*24)
         return res
@@ -32,7 +31,6 @@ def set_characters():
         users = User.query.all()
         for u in users:
             players.append(u.username)
-        print(players)
         random.shuffle(players)
         for p in range(0,len(players)):
             result = db.engine.execute("UPDATE user SET target='{}' WHERE username='{}'".format(players[p-1], players[p]))
@@ -48,7 +46,7 @@ def set_characters():
 
 @app.route("/game")
 def game():
-    tuples = db.engine.execute("SELECT target, character FROM user WHERE target !='{}'".format(request.cookies.get('myname')))
+    tuples = db.engine.execute("SELECT target, CASE WHEN target != '{}' THEN character ELSE '???' END as character FROM user".format(request.cookies.get('myname')))
     lst = list(tuples)
     return render_template('game.html', name=request.cookies.get('myname'), players = lst)
 
