@@ -56,4 +56,5 @@ def game():
 @app.route("/reset")
 def reset():
     tuples = db.engine.execute("DELETE FROM user")
+    db.session.commit()
     return render_template('reset.html')
