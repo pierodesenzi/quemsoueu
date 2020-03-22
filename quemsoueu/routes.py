@@ -51,3 +51,9 @@ def game():
     tuples = db.engine.execute("SELECT target, character FROM user WHERE target !='{}'".format(request.cookies.get('myname')))
     lst = list(tuples)
     return render_template('game.html', name=request.cookies.get('myname'), players = lst)
+
+
+@app.route("/reset")
+def reset():
+    tuples = db.engine.execute("DELETE FROM user")
+    return render_template('reset.html')

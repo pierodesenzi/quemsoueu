@@ -6,11 +6,7 @@
 </head>
 <body>
 
-{% for p in players %}
-<br>
-    {{p[0]}} é {{p[1]}}
-</br>
-{% endfor %}
+Jogadores reiniciados.
 
 <button type="button"
   onclick="window.location.href='{{ url_for('home') }}';">

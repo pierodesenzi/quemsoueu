@@ -12,5 +12,12 @@ Quem é você?
     {{ form.username }}
     <input type=submit>
 </form>
+
+<br>
+<button type="button"
+  onclick="window.location.href='{{ url_for('reset') }}';">
+    Resetar jogadores
+</button>
+</br>
 </body>
 </html>
