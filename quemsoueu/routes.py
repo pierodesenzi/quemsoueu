@@ -24,9 +24,9 @@ def wait():
 
 @app.route("/set_characters", methods=['GET', 'POST'])
 def set_characters():
-    ready = True#StartFlag.query.first()[1]
+    ready = list(db.engine.execute('SELECT COUNT(*) FROM User WHERE target IS NOT NULL'))
     #shuffler
-    if ready:
+    if len(ready):
         players = []
         users = User.query.all()
         for u in users:
