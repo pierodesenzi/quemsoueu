@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quem sou eu?</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content%}
+<font size='6'>
+  <br></br>
+<div align="center">
+    <div>
+      {{ name }}
+    </div>
+  Aguardando outros jogadores...
   <div>
-    {{ name }}
-  </div>
-Aguardando outros jogadores...
-<button type="button"
-  onclick="window.location.href='{{ url_for('set_characters') }}';">
-    Começar jogo
-</button>
-</body>
-</html>
+    
+  <button type="button"
+    onclick="window.location.href='{{ url_for('set_characters') }}';">
+      Começar jogo
+  </button>
+</div>
+</div>
+</font>
+{% endblock %}

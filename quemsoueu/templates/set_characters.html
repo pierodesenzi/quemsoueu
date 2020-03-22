@@ -1,17 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quem sou eu?</title>
-</head>
-<body>
-Defina o personagem de {{ target }}, {{ name }}
-
-<form method=post>
-    {{ form.csrf_token }}
-    {{ form.character }}
-    <input type=submit>
-</form>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content%}
+<div align="center">
+<font size='6'>
+  <br></br>
+  Defina o personagem de {{ target }}, {{ name }}
+  <br></br>
+  <form method=post>
+      {{ form.csrf_token }}
+      {{ form.character }}
+      <input type=submit>
+  </form>
+</font>
+</div>
+{% endblock %}

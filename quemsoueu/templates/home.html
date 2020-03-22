@@ -1,23 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quem sou eu?</title>
-</head>
-<body>
-Quem é você?
+{% extends "layout.html" %}
+{% block content%}
 
-<form method=post>
-    {{ form.csrf_token }}
-    {{ form.username }}
-    <input type=submit>
-</form>
+<div align="center">
 
-<br>
-<button type="button"
-  onclick="window.location.href='{{ url_for('reset') }}';">
-    Resetar jogadores
-</button>
-</br>
-</body>
-</html>
+<br></br>
+<br></br>
+<br></br>
+  <font size="14">
+    Quem é você?
+  </font>
+  <br></br>
+
+  <font size='6'>
+  <form method=post>
+      {{ form.csrf_token }}
+      {{ form.username }}
+      <input type=submit value='OK'  width="20">
+  </form>
+
+
+  <br>
+    <button type="button"
+      onclick="window.location.href='{{ url_for('reset') }}';">
+        Resetar jogadores
+    </button>
+  </br>
+</font>
+</div>
+
+{% endblock %}

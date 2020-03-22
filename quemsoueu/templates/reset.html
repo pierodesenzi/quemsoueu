@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quem sou eu?</title>
-</head>
-<body>
-
-Jogadores reiniciados.
-
-<button type="button"
-  onclick="window.location.href='{{ url_for('home') }}';">
-    Voltar
-</button>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block content%}
+<div align="center">
+<font size='6'>
+  <br>
+  Jogadores reiniciados.
+</br>
+<div>
+  <br>
+  <button type="button"
+    onclick="window.location.href='{{ url_for('home') }}';">
+      Ir para a home
+  </button>
+</br>
+</div>
+</font>
+</div>
+{% endblock %}

@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quem sou eu?</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content%}
+<div align="center">
+  <font size='6'>
 
-{% for p in players %}
-<br>
-    {{p[0]}} é {{p[1]}}
-</br>
-{% endfor %}
-
-<button type="button"
-  onclick="window.location.href='{{ url_for('home') }}';">
-    Voltar
-</button>
-
-</body>
-</html>
+  {% for p in players %}
+  <br>
+      {{p[0]}} é {{p[1]}}
+  </br>
+  {% endfor %}
+  <br></br>
+  <button type="button"
+    onclick="window.location.href='{{ url_for('reset') }}';">
+      Encerrar partida e resetar jogadores
+  </button>
+</font>
+</div>
+{% endblock %}
