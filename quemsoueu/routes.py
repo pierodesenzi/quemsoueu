@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, make_response
 from quemsoueu import app, db
 from quemsoueu.forms import RegistrationForm, CharacterForm
-from quemsoueu.models import User, StartFlag
+from quemsoueu.models import User#, StartFlag
 import random
 
 @app.route("/", methods=['GET', 'POST'])
@@ -19,22 +19,22 @@ def home():
 
 @app.route("/wait")
 def wait():
-    users = list(db.engine.execute('SELECT username FROM user WHERE username != "__flag"'))
+    users = list(db.engine.execute('SELECT username FROM user'))
     return render_template('wait.html', name=request.cookies.get('myname'), users = users)
 
 
 @app.route("/set_characters", methods=['GET', 'POST'])
 def set_characters():
-    ready = list(db.engine.execute('SELECT target FROM User WHERE username = "__flag"'))
+
+    ready = list(db.engine.execute('SELECT status FROM flag'))[0].status
     print(ready)
 
-    if len(ready) == 0:
-        flag = User(username='__flag')
-        db.session.add(flag)
+    if not ready:
+        print('shuffling...')
+        db.engine.execute("UPDATE flag SET status = True")
         db.session.commit()
-        print('B')
         players = []
-        users = list(db.engine.execute('SELECT * FROM user WHERE username != "__flag"'))
+        users = list(db.engine.execute('SELECT * FROM user'))
         for u in users:
             players.append(u.username)
         random.shuffle(players)
@@ -52,7 +52,16 @@ def set_characters():
 
 @app.route("/game")
 def game():
-    tuples = db.engine.execute("SELECT target, CASE WHEN target != '{}' THEN character ELSE '???' END as character FROM user WHERE username != '__flag'".format(request.cookies.get('myname')))
+    tuples = db.engine.execute("""
+    SELECT
+      target,
+      CASE
+        WHEN character IS NULL THEN '(em escolha)'
+        WHEN target != '{}' THEN character
+        ELSE '???' END as character
+    FROM user
+    """
+    .format(request.cookies.get('myname')))
     lst = list(tuples)
     return render_template('game.html', name=request.cookies.get('myname'), players = lst)
 
@@ -60,6 +69,6 @@ def game():
 @app.route("/reset")
 def reset():
     tuples = db.engine.execute("DELETE FROM user")
-    #db.engine.execute("UPDATE startflag SET ready = False")
+    db.engine.execute("UPDATE flag SET status = false")
     db.session.commit()
     return render_template('reset.html')
