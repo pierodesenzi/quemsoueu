@@ -7,6 +7,6 @@ class User(db.Model):
     target = db.Column(db.String(20))
     character = db.Column(db.String(30))
 
-class StartFlag(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    ready = db.Column(db.Boolean, nullable=False)
+#class StartFlag(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    ready = db.Column(db.String(5))
