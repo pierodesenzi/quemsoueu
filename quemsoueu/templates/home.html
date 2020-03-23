@@ -8,17 +8,15 @@
 <br></br>
 <br></br>
 <br></br>
-
-  <br></br>
+<br></br>
 
   <font size='6'>
-    Mas antes, quem é você? 
+    Mas antes, quem é você?
   <form method=post>
       {{ form.csrf_token }}
       {{ form.username }}
       <input type=submit value='OK'  width="20">
   </form>
-
 
   <br>
     <button type="button"
@@ -26,6 +24,16 @@
         Resetar jogadores
     </button>
   </br>
+
+<br></br>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <h3 style="color:red;">{{ message }}</h3>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
 </font>
 </div>
 

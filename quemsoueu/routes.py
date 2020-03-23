@@ -25,11 +25,8 @@ def wait():
 
 @app.route("/set_characters", methods=['GET', 'POST'])
 def set_characters():
-
-    ready = list(db.engine.execute('SELECT status FROM flag'))[0].status
-    print(ready)
-
-    if not ready:
+    flag = list(db.engine.execute('SELECT status FROM flag'))[0].status
+    if not flag:
         print('shuffling...')
         db.engine.execute("UPDATE flag SET status = 1")
         db.session.commit()
@@ -60,9 +57,13 @@ def game():
         WHEN target != '{}' THEN character
         ELSE '???' END as character
     FROM user
-    """
-    .format(request.cookies.get('myname')))
+    """.format(request.cookies.get('myname')))
     lst = list(tuples)
+    print(lst)
+    if len(lst) == 0:
+        flash('A sala foi encerrada.')
+        res = make_response(redirect(url_for('home')))
+        return res
     return render_template('game.html', name=request.cookies.get('myname'), players = lst)
 
 
