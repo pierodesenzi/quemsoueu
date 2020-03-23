@@ -3,7 +3,10 @@ from quemsoueu.models import User
 
 print('dropping...')
 db.drop_all()
-db.engine.execute('DROP TABLE flag')
+try:
+    db.engine.execute('DROP TABLE flag')
+except:
+    pass
 print('recreating...')
 db.create_all()
 db.engine.execute("""CREATE TABLE flag (
@@ -11,7 +14,6 @@ db.engine.execute("""CREATE TABLE flag (
 )""")
 print('adding flag...')
 db.engine.execute("INSERT INTO flag VALUES (False)")
-#db.session.add(StartFlag(ready=False))
 print('committing...')
 db.session.commit()
 print('Done.')
